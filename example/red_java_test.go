@@ -33,6 +33,7 @@ func TestSuite_Java(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, compose.Up())
 	t.Run("Java RED metrics", testREDMetricsJavaHTTP)
+	require.NoError(t, compose.Close())
 }
 
 // does a smoke test to verify that all the components that started

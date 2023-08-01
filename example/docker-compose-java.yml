@@ -15,8 +15,7 @@ services:
       - --config=/configs/instrumenter-config-java.yml
     volumes:
       - ./configs/:/configs
-      - ../../testoutput:/coverage
-      - ../../testoutput/run:/var/run/otelauto
+      - ./testoutput/run:/var/run/otelauto
     container_name: hatest-autoinstrumenter
     privileged: true # in some environments (not GH Pull Requests) you can set it to false and then cap_add: [ SYS_ADMIN ]
     network_mode: "service:testserver"
