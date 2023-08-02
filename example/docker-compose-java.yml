@@ -3,6 +3,7 @@ version: '3.8'
 services:
   testserver:
     image: grcevski/tests:greeting${JAVA_TEST_MODE}
+    container_name: hatest-testserver
     ports:
       - "8086:8085"
     environment:
@@ -40,7 +41,7 @@ services:
   # OpenTelemetry Collector
   otelcol:
     image: otel/opentelemetry-collector-contrib:0.77.0
-    container_name: otel-col
+    container_name: hatest-otel-col
     deploy:
       resources:
         limits:
@@ -63,7 +64,7 @@ services:
   # Prometheus
   prometheus:
     image: quay.io/prometheus/prometheus:v2.34.0
-    container_name: prometheus
+    container_name: hatest-prometheus
     command:
       - --storage.tsdb.retention.time=1m
       - --config.file=/etc/prometheus/prometheus-config.yml

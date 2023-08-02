@@ -1,4 +1,4 @@
-package javatest
+package inttests
 
 import (
 	"net"
@@ -42,7 +42,7 @@ func waitForJavaTestComponents(t *testing.T, url string) {
 	tests.EnsureReadyWithPrometheus(t, url, "/greeting", prometheusHostPort)
 }
 
-func testREDMetricsForJavaHTTPLibrary(t *testing.T, url string, comm string, systemWide bool) {
+func testREDMetricsForJavaHTTPLibrary(t *testing.T, url string, comm string) {
 	path := "/greeting"
 
 	// Call the instrumented service 4 times asking to respond with HTTP code 204
@@ -63,11 +63,7 @@ func testREDMetricsForJavaHTTPLibrary(t *testing.T, url string, comm string, sys
 			`http_target="` + path + `"}`)
 		require.NoError(t, err)
 		// check duration_count has 3 calls and all the arguments
-		if systemWide {
-			assert.LessOrEqual(t, 1, len(results))
-		} else {
-			require.Len(t, results, 1)
-		}
+		require.Len(t, results, 1)
 		if len(results) > 0 {
 			res := results[0]
 			require.Len(t, res.Value, 2)
@@ -84,7 +80,7 @@ func testREDMetricsJavaHTTP(t *testing.T) {
 	} {
 		t.Run(testCaseURL, func(t *testing.T) {
 			waitForJavaTestComponents(t, testCaseURL)
-			testREDMetricsForJavaHTTPLibrary(t, testCaseURL, "greeting", false)
+			testREDMetricsForJavaHTTPLibrary(t, testCaseURL, "greeting")
 		})
 	}
 }
